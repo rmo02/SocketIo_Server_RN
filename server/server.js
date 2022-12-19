@@ -11,18 +11,20 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('Usuário Conectado');
+  console.log('a user connected');
 
-  socket.on('send_message', (data) => {
-    io.emit('received_message', data)
+
+  socket.on('send_message',(data)=>{
+    console.log("received message in server side",data)
+    io.emit('received_message',data)
   })
 
-
   socket.on('disconnect', () => {
-    console.log('Usuário desconectado');
+    console.log('user disconnected');
   });
   
 });
-server.listen(3000, () => {
-  console.log('listening on *:3000');
+
+server.listen(port, () => {
+  console.log( `Server running at http://localhost:${port}/`);
 });
