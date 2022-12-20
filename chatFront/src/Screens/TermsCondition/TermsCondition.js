@@ -18,29 +18,30 @@ import WrapperContainer from "../../components/WrapperContainer";
 // create a component
 const TermsCondition = ({ navigation }) => {
   return (
-    <WrapperContainer containerStyle={{ alingItems: "center" }}>
-      <View style={{alignItems:'center'}}>
-
-       <Image
-       resizeMode="contain"
-       style={styles.logo}
-       source={imagePath.icLogo}
-     />
-
-        <Text style={styles.headingStyle}>Welcome to RChats</Text>
-        <Text>
-          {" "}
-          Read our{" "}
-          <Text style={{ color: colors.lightBlue }}>Privacy Policy.</Text> Tap
-          "Agree & Continue" to accept the{" "}
-          <Text style={{ color: colors.lightBlue }}> Terms of Service </Text>
+    <WrapperContainer containerStyle={{ alignItems: "center" }}>
+      <Image
+        resizeMode="contain"
+        style={styles.logoStyle}
+        source={imagePath.icLogo}
+      />
+      <Text style={styles.headingStyle}>Welcome to RChats</Text>
+      <Text style={styles.descStyle}>
+        Read our{" "}
+        <Text style={{ color: colors.lightBlue }}>
+          Privacy Policy
+        </Text>{" "}
+        Tap "Agree & Continue to accept the{" "}
+        <Text style={{ color: colors.lightBlue }}>
+          Terms of Service
         </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(navigationStrings.PHONE_NUMBER)}
-        >
-          <Text style={styles.agreeStyle}>Agree & Continue</Text>
-        </TouchableOpacity>
-      </View>
+      </Text>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate(navigationStrings.PHONE_NUMBER)}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.agreeStyle}>Agree & Continue</Text>
+      </TouchableOpacity>
     </WrapperContainer>
   );
 };
