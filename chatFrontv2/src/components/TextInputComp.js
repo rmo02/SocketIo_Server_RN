@@ -9,12 +9,14 @@ import { moderateScale, textScale } from "../styles/responsiveSize";
 const TextInputComp = ({
     placeholder="",
     inputStyle={},
+    onChangeText = () => {},
     ...props
 }) => {
   return(
   <Fragment>
     <TextInput
       placeholder={placeholder}
+      onChangeText={onChangeText}
       style={{...styles.inputStyle, ...inputStyle}}
       {...props}
     />

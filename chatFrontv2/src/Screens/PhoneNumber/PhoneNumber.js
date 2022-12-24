@@ -15,21 +15,29 @@ import WrapperContainer from "../../components/WrapperContainer";
 import imagePath from "../../constatns/imagePath";
 import styles from "./styles";
 import navigationStrings from "../../constatns/navigationStrings";
+import colors from '../../styles/colors';
+import fontFamily from "../../styles/fontFamily";
 
 
 // create a component
 const PhoneNumber = ({navigation}) => {
-  const [selectCountry, setSelectCountry] = useState({
-    name: "Brazil",
-    dialCode: "+55",
-    isoCode: "BR",
-    flag: "https://cdn.kcak11.com/CountryFlags/countries/br.svg",
-  });
 
-  const fetchCountry = (data) => {
-    console.log("country data", data);
-    setSelectCountry(data);
-  };
+  const [state, setState] = useState({
+    selectedCountry: {
+        "name": "Brazil",
+        "dialCode": "+55",
+        "isoCode": "BR",
+        "flag": "https://cdn.kcak11.com/CountryFlags/countries/br.svg"
+    },
+    phoneNumber: '',
+})
+const { selectedCountry, phoneNumber } = state
+
+const updateState = (data) => setState((state) => ({ ...state, ...data }))
+
+const fetchCountry = (data) => {
+    updateState({ selectedCountry: data })
+}
 
   const leftCustomView = () => {
     return(
@@ -40,6 +48,10 @@ const PhoneNumber = ({navigation}) => {
     )
   }
 
+  const onDone = () => {
+    navigation.navigate(navigationStrings.EDIT_PROFILE, { data: state })
+  }
+
   return (
     <WrapperContainer containerStyle={{ paddingHorizontal: 0 }}>
       <HeaderComponent
@@ -47,21 +59,26 @@ const PhoneNumber = ({navigation}) => {
         containerStyle={{ paddingHorizontal: 8 }}
         leftCustomView={leftCustomView}
         isLeftView={true}
-        onPressRight={()=> navigation.navigate(navigationStrings.EDIT_PROFILE)}
+        onPressRight={onDone}
+        rightTextStyle={{color: phoneNumber.length > 8 ? colors.lightBlue : colors.grey,
+          fontFamily:  phoneNumber.length > 8 ? fontFamily.bold : fontFamily.regular,
+        }}
+        rightPressActive={phoneNumber.length < 8}
       />
       <Text style={styles.descStyle}>
         Rchats will send and sms message to verify tour phone number
       </Text>
       <HorizontalLine />
-      <CountryPicker value={selectCountry?.name} fetchCountry={fetchCountry} />
+      <CountryPicker value={selectedCountry?.name} fetchCountry={fetchCountry} />
 
       <View style={{ flexDirection: "row", alignItems: "center",borderBottomWidth: 0.7, paddingLeft:10}}>
-        <Text style={styles.dialCodeStyle}>{selectCountry?.dialCode}</Text>
+        <Text style={styles.dialCodeStyle}>{selectedCountry?.dialCode}</Text>
         <View style={{flex:1}}>
         <TextInput
         keyboardType="phone-pad"
           placeholder="Enter your phone number"
           style={styles.inputStyle}
+          onChangeText={text => updateState({phoneNumber: text})}
         />
         </View>
       </View>

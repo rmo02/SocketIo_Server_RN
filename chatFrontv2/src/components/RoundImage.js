@@ -23,7 +23,14 @@ const RoudImage = ({ image = "", size = 60, onPress = () => {} }) => {
       }}
     >
       {!!image ? (
-        <Image source={{ uri: image }} />
+        <Image
+          style={{
+            height: moderateScale(size),
+            width: moderateScale(size),
+            borderRadius: moderateScale(size / 2),
+          }}
+          source={{ uri: image }}
+        />
       ) : (
         <Text style={styles.textStyle}>add photo</Text>
       )}

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import CountryPicker from "../../components/CountryPicker";
+import navigationStrings from "../../constatns/navigationStrings";
 import HeaderComponent from "../../components/HeaderComponent";
 import HorizontalLine from "../../components/HorizontalLine";
 import WrapperContainer from "../../components/WrapperContainer";
@@ -18,39 +18,51 @@ import { moderateScale, textScale } from "../../styles/responsiveSize";
 import fontFamily from "../../styles/fontFamily";
 import colors from "../../styles/colors";
 import TextInputComp from "../../components/TextInputComp";
-import { androidCameraPermission } from '../../utils/permissons';
+import { androidCameraPermission } from "../../utils/permissons";
 import ImagePicker from "react-native-image-crop-picker";
+import styles from './styles';
 
 // create a component
-const EditProfile = ({ navigation }) => {
+const EditProfile = ({ navigation, route }) => {
+
   const [state, setState] = useState({
-    image: "",
-    name: "",
-  });
+      image: '',
+      name: '',
+  })
+  const { image, name } = state
 
-  const { image, name } = state;
+  const { data } = route.params
 
-  const updateState = (data) => setState((state) => ({ ...state, ...data }));
+  const updateState = (data) => setState((state) => ({ ...state, ...data }))
 
   const leftCustomView = () => {
     return (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image source={imagePath.icBack} />
-      </TouchableOpacity>
-    );
-  };
+        <TouchableOpacity
+            onPress={() => navigation.goBack()}
+        >
+            <Image source={imagePath.icBack} />
+        </TouchableOpacity>
+    )
+}
 
-  const selectPhoto = async () => {
-    const permissionsStatus = await androidCameraPermission();
-    if(permissionsStatus){
-      ImagePicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: true,
-      }).then(image => {
-        console.log(image);
-      });
+const selectPhoto = async () => {
+    const permissionStatus = await androidCameraPermission();
+    if (permissionStatus) {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+        }).then(res => {
+            console.log(res);
+            updateState({ image: res.path })
+        });
     }
+}
+
+
+  const onDone = () => {
+    navigation.navigate(navigationStrings.OTP_VERIFICATION, {
+      data: { ...state, ...data }})
   };
 
   return (
@@ -60,40 +72,32 @@ const EditProfile = ({ navigation }) => {
         containerStyle={{ paddingHorizontal: 8 }}
         leftCustomView={leftCustomView}
         isLeftView={true}
-        onPressRight={() => navigation.navigate(navigationStrings.EDIT_PROFILE)}
+        onPressRight={() => onDone()}
+        rightTextStyle={{
+          color: name.length > 3 ? colors.lightBlue : colors.grey,
+          fontFamily: name.length > 3 ? fontFamily.bold : fontFamily.regular,
+      }}
+      rightPressActive={name.length < 3}
       />
       <HorizontalLine />
       <View style={{ margin: moderateScale(16) }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <RoundImage onPress={() => selectPhoto()} />
+          <RoundImage onPress={() => selectPhoto()} image={image} />
           <Text style={styles.descStyle}>
             Enter your name anda add an optional profile picture
           </Text>
         </View>
       </View>
       <HorizontalLine />
-      <TextInputComp placeholder="Your Name" />
+      <TextInputComp
+        placeholder="Your Name"
+        onChangeText={(text) => updateState({ name: text })}
+      />
       <HorizontalLine />
     </WrapperContainer>
   );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2c3e50",
-  },
-  descStyle: {
-    fontSize: textScale(14),
-    fontFamily: fontFamily.blackFont,
-    flex: 1,
-    marginLeft: moderateScale(16),
-    color: colors.grey,
-  },
-});
 
 //make this component available to the app
 export default EditProfile;
