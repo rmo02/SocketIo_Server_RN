@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "chatFrontv2",
+    "slug": "chatFrontv2",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
