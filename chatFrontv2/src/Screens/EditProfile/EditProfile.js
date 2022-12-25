@@ -21,21 +21,25 @@ import TextInputComp from "../../components/TextInputComp";
 import { androidCameraPermission } from "../../utils/permissons";
 import ImagePicker from "react-native-image-crop-picker";
 import styles from './styles';
+import actions from '../../redux/actions'
 
 // create a component
 const EditProfile = ({ navigation, route }) => {
 
   const [state, setState] = useState({
-      image: '',
-      name: '',
-  })
-  const { image, name } = state
+    image: '',
+    name: '',
+})
+const { image, name } = state
 
-  const { data } = route.params
+const { data } = route.params
 
-  const updateState = (data) => setState((state) => ({ ...state, ...data }))
+const updateState = (data) => setState((state) => ({ ...state, ...data }))
 
-  const leftCustomView = () => {
+
+console.log("datadata", data)
+
+const leftCustomView = () => {
     return (
         <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -59,11 +63,21 @@ const selectPhoto = async () => {
     }
 }
 
-
-  const onDone = () => {
-    navigation.navigate(navigationStrings.OTP_VERIFICATION, {
-      data: { ...state, ...data }})
-  };
+const onDone = async () => {
+    let apiData = {
+        ...state,
+        ...data
+    }
+    try {
+        const res = await actions.signUp(apiData)
+        console.log("api res signup", res)
+        if (!!res?.data) {
+            navigation.navigate(navigationStrings.OTP_VERIFICATION, { data: res?.data })
+        }
+    } catch (error) {
+        console.log("error raised is signup api", error)
+    }
+}
 
   return (
     <WrapperContainer containerStyle={{ paddingHorizontal: 0 }}>

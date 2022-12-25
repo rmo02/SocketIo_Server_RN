@@ -9,4 +9,6 @@ export default {
     OTP_VERIFICATION:"otpVerification",
     PHONE_NUMBER:"phoneNumber",
     EDIT_PROFILE:"editProfile",
+    USERS:"users",
+    MESSAGE:"message"
 }

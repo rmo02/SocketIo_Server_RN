@@ -12,26 +12,33 @@ import OtpInputs from "react-native-otp-inputs";
 import actions from "../../redux/actions";
 // create a component
 const OtpVerification = ({ navigation, route }) => {
-  const [data, setData] = useState(route?.params);
+  const { data } = route?.params
+
 
   const leftCustomView = () => {
-    return (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image source={imagePath.icBack} />
-
-        <Text>Edit Number</Text>
-      </TouchableOpacity>
-    );
-  };
+      return (
+          <TouchableOpacity
+              onPress={() => navigation.goBack()}
+          >
+              <Image source={imagePath.icBack} />
+          </TouchableOpacity>
+      )
+  }
 
   const handleChange = async (value) => {
-    if (value.length >= 6) {
-      actions.singUp({
-        ...data,
-        _id: "kadjfhadkjfh",
-      });
-    }
-  };
+      if (value.length >= 6) {
+          try {
+              let res = await actions.otpVerify({
+                  otp: value,
+                  user_id: data._id
+              })
+              console.log("api res",res)
+          } catch (error) {
+              console.log("error riased in verify api",error)
+              alert(error?.message)
+          }
+      }
+  }
 
   return (
     <WrapperContainer containerStyle={{ paddingHorizontal: 0 }}>

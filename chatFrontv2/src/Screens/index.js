@@ -11,3 +11,7 @@ export {default as TermsCondition} from './TermsCondition/TermsCondition';
 export {default as EditProfile} from './EditProfile/EditProfile';
 export {default as PhoneNumber} from './PhoneNumber/PhoneNumber';
 export {default as OtpVerification} from './OtpVerification/OtpVerifications';
+
+//rest Screens
+export {default as Users} from './Users/Users';
+export {default as Message} from './Message/Message';
