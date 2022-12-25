@@ -1,15 +1,18 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Routes from './src/Navigations/Routes';
-
+import React, { Component } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Provider } from "react-redux";
+import Routes from "./src/Navigations/Routes";
+import store from "./src/redux/store";
 
 // create a component
 const App = () => {
   return (
-    <View style={styles.container}>
-    <Routes />
-    </View>
+    <Provider store={store}>
+      <View style={styles.container}>
+        <Routes />
+      </View>
+    </Provider>
   );
 };
 
